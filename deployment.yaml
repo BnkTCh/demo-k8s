@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myweb-deployment
+  labels:
+    tier: web
+    app: myweb
+spec:
+  selector:
+    matchLabels:
+      app: myweb
+  replicas: 4
+  template:
+    metadata:
+      name: python
+      labels:
+        app: myweb
+    spec:
+      containers:
+        - name: myweb
+          image: bnktch/web
+          ports:
+           - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myweb-service
+spec:
+  selector:
+    app: myweb
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080 
